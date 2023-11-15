@@ -100,7 +100,7 @@ const UserBio = () => {
                             onChange={(e) => setUpdatedBio(e.target.value)}
                         />
                         <button
-                            className="w-1/4 mt-1 py-1 bg-purple-500 hover:bg-purple-700 text-white text-xs font-bold rounded focus:outline-none focus:shadow-outline"
+                            className="w-1/4 mt-1 py-1 bg-teal-800 hover:bg-teal-700 text-white text-xs font-bold rounded focus:outline-none focus:shadow-outline"
                             type="button"
                             onClick={handleUpdateBio}
                         >

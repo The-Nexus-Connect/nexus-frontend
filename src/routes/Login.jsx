@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, useToast, Input, Flex, Box, FormControl, InputGroup, InputRightElement } from "@chakra-ui/react";
+import axios from "axios";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,22 +11,27 @@ const Login = () => {
   const apiKey = import.meta.env.VITE_API_KEY;
   const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
   const [token, setToken] = useState("");
+  const [show, setShow] = useState(false);
   const toast = useToast();
+
+  const handleShow = () => setShow(!show)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${backendUrl}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.post(
+        `${backendUrl}/api/users/login`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`
+          },
+        });
 
-      const data = await response.json();
+      const data = response.data;
+      console.log(data);
 
       if (data.accessToken) {
         setToken(data.accessToken);
@@ -69,63 +75,74 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-zinc-900">
-      <form
+    <Flex className="flex justify-center items-center h-screen bg-zinc-900" >
+      <Box
+        as="form"
         onSubmit={handleSubmit}
-        className="bg-black drop-shadow-2xl rounded px-8 pt-10 pb-10 mb-4"
+        w="sm"
+        p="8"
+        bg="black"
+        boxShadow="2xl"
+        rounded="md"
+        method="POST"
       >
         <h3 className="text-white text-center mb-5">Log In with College ID</h3>
-        <div className="mb-5">
-          <div className="mb-4">
-            <input
-              className="shadow appearance-none border border-gray-700 hover:border-gray-400 bg-neutral-900 text-white rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-              name="email"
-              type="email"
-              placeholder="Email"
+        <FormControl mb="5">
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleInputChange}
+            focusBorderColor='teal.800'
+          />
+        </FormControl>
+        <FormControl mb="5">
+          <InputGroup size='md'>
+            <Input
+              type={show ? 'text' : 'password'}
+              name='password'
+              placeholder='Enter password'
               onChange={handleInputChange}
+              focusBorderColor='teal.800'
             />
-          </div>
-          <div className="mb-4">
-            <input
-              className="shadow appearance-none border border-gray-700 hover:border-gray-400 bg-neutral-900 text-white rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-              name="password"
-              type="password"
-              placeholder="Password"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="flex items-center justify-center space-x-4">
-            <Button
-              type="submit"
-              bg="purple.500"
-              _hover={{ bg: "purple.700" }}
-              color="white"
-              fontWeight="bold"
-              py={2}
-              px={4}
-              rounded="md"
-              _focus={{ outline: "none", shadow: "outline" }}
-            >
-              Log In
-            </Button>
-            <Button
-              bg="white"
-              color="purple.500"
-              fontWeight="bold"
-              py={2}
-              px={4}
-              rounded="md"
-              _focus={{ outline: "none", shadow: "outline" }}
-              onClick={() => {
-                window.location.href = "/signup";
-              }}
-            >
-              Sign Up
-            </Button>
-          </div>
-        </div>
-      </form>
-    </div>
+            <InputRightElement width='4.5rem'>
+              <Button h='1.75rem' size='sm' onClick={handleShow}>
+                {show ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+        <Flex className="flex items-center justify-center space-x-2">
+          <Button
+            type="submit"
+            bg="teal.800"
+            _hover={{ bg: "teal.700" }}
+            color="white"
+            fontWeight="bold"
+            py={2}
+            px={4}
+            rounded="md"
+            _focus={{ outline: "none", shadow: "outline" }}
+          >
+            Log In
+          </Button>
+          <Button
+            bg="white"
+            color="teal.800"
+            fontWeight="bold"
+            py={2}
+            px={4}
+            rounded="md"
+            _focus={{ outline: "none", shadow: "outline" }}
+            onClick={() => {
+              window.location.href = "/signup";
+            }}
+          >
+            Sign Up
+          </Button>
+        </Flex>
+      </Box>
+    </Flex>
   );
 };
 
