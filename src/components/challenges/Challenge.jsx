@@ -139,6 +139,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
   const handleCodechefEnroll = async () => {
 
     if (challenge.name === 'CodeChef') {
+      console.log('CodeChef');
       try {
         const response = await axios.put(
           `${backendUrl}/api/contests/codechef/enroll/${userData._id}`,
