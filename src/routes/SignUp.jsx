@@ -132,8 +132,8 @@ const SignUp = () => {
           <div className="flex items-center justify-center space-x-4">
             <Button
               type="submit"
-              bg="purple.500"
-              _hover={{ bg: "purple.700" }}
+              bg="teal.800"
+              _hover={{ bg: "teal.700" }}
               color="white"
               fontWeight="bold"
               py={2}
@@ -145,7 +145,7 @@ const SignUp = () => {
             </Button>
             <Button
               bg="white"
-              color="purple.500"
+              color="teal.800"
               fontWeight="bold"
               py={2}
               px={4}
