@@ -138,8 +138,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
 
   const handleCodechefEnroll = async () => {
 
-    if (challenge.name === 'CodeChef') {
-      console.log('CodeChef');
+    if (challenge.platform === 'CodeChef') {
       try {
         const response = await axios.put(
           `${backendUrl}/api/contests/codechef/enroll/${userData._id}`,
@@ -171,7 +170,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
           isClosable: true,
         });
       }
-    } else if (challenge.name === 'HackerRank') {
+    } else if (challenge.platform === 'HackerRank') {
       console.log('HackerRank');
     }
   }
