@@ -46,7 +46,7 @@ const CodeChefLeaderboard = () => {
       <Tabs isFitted>
         <TabList className="flex justify-between">
           {Object.keys(categories).map((stars, index) => (
-            <Tab key={index}><AiFillStar className="mr-2"/> {`${stars} Star`}</Tab>
+            <Tab key={index}><AiFillStar className="mr-2" /> {`${stars} Star`}</Tab>
           ))}
         </TabList>
         <TabPanels>
@@ -61,6 +61,7 @@ const CodeChefLeaderboard = () => {
                       <Th>Branch</Th>
                       <Th>Codechef Id</Th>
                       <Th isNumeric>Contest Rank</Th>
+                      <Th >Section</Th>
                       <Th isNumeric>Roll No</Th>
                     </Tr>
                   </Thead>
@@ -72,6 +73,7 @@ const CodeChefLeaderboard = () => {
                         <Td>{winner.branch}</Td>
                         <Td>{winner.codechefId}</Td>
                         <Td isNumeric>{winner.contestGlobalRank}</Td>
+                        <Td >{winner.section}</Td>
                         <Td isNumeric>{winner.rollNo}</Td>
                       </Tr>
                     ))}
