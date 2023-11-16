@@ -73,14 +73,14 @@ function App() {
                   </Layout>
                 }
               />
-              {/* <Route
-                path='/leaderboard/starters'
+              <Route
+                path='/leaderboard/:contestName'
                 element={
                   <Layout>
                     <CodeChefLeaderboard />
                   </Layout>
                 }
-              /> */}
+              />
               <Route path="*" element={<NotFound />} />
             </>
           ) : (

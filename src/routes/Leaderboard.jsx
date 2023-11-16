@@ -159,7 +159,7 @@ const Leaderboard = () => {
                                     </>
                                 )}
                                 <Link
-                                    to={`/leaderboard/${challenge.name.toLowerCase().split(' ')[0]}`}
+                                    to={`/leaderboard/${challenge.name.toLowerCase()}`}
                                     className="flex justify-end items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-2"
                                 >
                                     View Results
