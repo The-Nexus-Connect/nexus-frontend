@@ -141,13 +141,13 @@ const Announcement = ({ announcement, role, onUpdate }) => {
                 ) : (
                     <>
                         <p>{announcement.description}</p>
-                        <div className="flex justify-between items-center">
+                        <div className="flex flex-col sm:flex-row justify-between items-center">
                             <div className="flex items-center space-x-2">
                                 <AiOutlineCalendar className="text-3xl text-gray-400" />
                                 <span className="text-gray-400">{formattedDate}</span>
                             </div>
                             {role === 'admin' && (
-                                <div className="flex space-x-3">
+                                <div className="flex space-x-3 my-3">
                                     <button
                                         onClick={handleEdit}
                                         className="bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center"

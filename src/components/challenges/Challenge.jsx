@@ -217,7 +217,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
           <>
             <h2 className="text-lg font-semibold">{challenge.name}</h2>
             <p>{challenge.description}</p>
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row justify-between items-center">
               <div className="flex items-center space-x-2 mt-2">
                 <MdGroups2 className="text-3xl text-gray-400" />
                 <span className="text-gray-400">{challenge.totalParticipant}</span>
@@ -229,7 +229,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
                   {challenge.platform === 'CodeChef' && (
                     <button
                       onClick={handleCodechefEnroll}
-                      className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+                      className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-3"
                       disabled={isCodechefEnrolled}
                     >
                       {isCodechefEnrolled ? 'Enrolled' : 'Enroll'} <AiOutlineArrowRight className="ml-2" />
@@ -237,7 +237,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
                   )}
                   {challenge.platform === 'HackerRank' && (
                     <button
-                      className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+                      className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-3"
                     >
                       {isHackerRankEnrolled ? 'Enrolled' : 'Enroll'} <AiOutlineArrowRight className="ml-2" />
                     </button>
@@ -245,7 +245,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
                 </>
               )}
               {role === 'admin' && (
-                <div className="flex space-x-3">
+                <div className="flex space-x-3 my-3">
                   <button
                     onClick={handleEdit}
                     className="bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded flex items-center"

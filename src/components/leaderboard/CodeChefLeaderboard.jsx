@@ -42,7 +42,7 @@ const CodeChefLeaderboard = () => {
   const categories = categorizeWinnersByStars();
 
   return (
-    <div>
+    <div className="mb-10">
       <Tabs isFitted>
         <TabList className="flex justify-between">
           {Object.keys(categories).map((stars, index) => (
