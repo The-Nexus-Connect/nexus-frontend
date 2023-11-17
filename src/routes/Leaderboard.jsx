@@ -132,7 +132,7 @@ const Leaderboard = () => {
                         {challenge.platform.toLowerCase().split(' ')[0] === "codechef" && (
                             <>
                                 {userData.role === "admin" && (
-                                    <>
+                                    <div className="flex justify-center items-center space-x-3">
                                         <Button
                                             isLoading={isGeneratingResult}
                                             loadingText='Generating Result'
@@ -156,7 +156,7 @@ const Leaderboard = () => {
                                         >
                                             Reset Users <BiReset className="ml-2" />
                                         </Button>
-                                    </>
+                                    </div>
                                 )}
                                 <Link
                                     to={`/leaderboard/${challenge.name.toLowerCase()}`}
