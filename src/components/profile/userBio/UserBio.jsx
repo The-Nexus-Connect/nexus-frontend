@@ -72,7 +72,7 @@ const UserBio = () => {
                     src={userData.userImg}
                 />
             </div>
-            <div className="flex flex-col justify-center items-center">
+            {/* <div className="flex flex-col justify-center items-center">
                 <div className="mx-3 justify-center items-center flex space-x-4">
                     <Tag>
                         {" "}
@@ -87,7 +87,7 @@ const UserBio = () => {
                         <GiPodiumThird className="w-5 h-5" /> 4{" "}
                     </Tag>
                 </div>
-            </div>
+            </div> */}
             <div className="w-full flex flex-col items-center justify-center mx-1">
                 <p className="w-fit mx-2 mt-3 my-2 font-bold text-2xl"> Bio </p>
                 {isEditingBio ? (
