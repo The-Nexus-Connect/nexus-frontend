@@ -1,4 +1,4 @@
-import { Tab, TabList, TabPanel, TabPanels, Table, TableContainer, Tabs, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Table, TableContainer, Tabs, Tag, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { AiFillStar } from "react-icons/ai";
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -21,32 +21,34 @@ const CodeChefLeaderboard = () => {
 
     fetchData();
   }, [contestName]);
+  console.log(leaderboardsData);
 
-  const categorizeWinnersByStars = () => {
+  const categorizeWinnersByContest = () => {
     const categories = {};
 
     if (leaderboardsData && leaderboardsData.winners) {
       leaderboardsData.winners.forEach((winner) => {
-        const stars = winner.stars || 0;
-        if (!categories[stars]) {
-          categories[stars] = [];
+        const contestName = winner.contestName || 'Unknown Contest';
+
+        if (!categories[contestName]) {
+          categories[contestName] = [];
         }
-        categories[stars].push(winner);
+
+        categories[contestName].push(winner);
       });
     }
 
     return categories;
   };
 
-
-  const categories = categorizeWinnersByStars();
+  const categories = categorizeWinnersByContest();
 
   return (
     <div className="mb-10">
       <Tabs isFitted>
         <TabList className="flex justify-between">
-          {Object.keys(categories).map((stars, index) => (
-            <Tab key={index}><AiFillStar className="mr-2" /> {`${stars} Star`}</Tab>
+          {Object.keys(categories).map((contestName, index) => (
+            <Tab key={index}>{`${contestName}`}</Tab>
           ))}
         </TabList>
         <TabPanels>
@@ -60,6 +62,7 @@ const CodeChefLeaderboard = () => {
                       <Th>Name</Th>
                       <Th>Branch</Th>
                       <Th>Codechef Id</Th>
+                      <Th>Stars</Th>
                       <Th isNumeric>Contest Rank</Th>
                       <Th >Section</Th>
                       <Th isNumeric>Roll No</Th>
@@ -72,6 +75,7 @@ const CodeChefLeaderboard = () => {
                         <Td>{winner.username}</Td>
                         <Td>{winner.branch}</Td>
                         <Td>{winner.codechefId}</Td>
+                        <Td><Tag variant={"outline"}>{winner.stars}<AiFillStar className="ml-2" /></Tag></Td>
                         <Td isNumeric>{winner.contestGlobalRank}</Td>
                         <Td >{winner.section}</Td>
                         <Td isNumeric>{winner.rollNo}</Td>
