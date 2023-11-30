@@ -104,7 +104,7 @@ const Challenges = () => {
 
 
   return (
-    <div className="p-2 flex flex-col space-y-5">
+    <div className="mb-10 p-2 flex flex-col space-y-5">
       {userData.role === "admin" && (
         <>
           {isAdding ? (

@@ -1,5 +1,6 @@
 import { SiCodechef } from "react-icons/si";
 import { GrResume } from "react-icons/gr";
+import { BiReset } from "react-icons/bi";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ const Leaderboard = () => {
     const [challengesData, setChallengesData] = useState([]);
     const [userData, setUserData] = useState({});
     const [isGeneratingResult, setIsGeneratingResult] = useState(false);
+    const [isResetingUser, setIsResetingUser] = useState(false);
 
     useEffect(() => {
         fetchUserData().then((data) => {
@@ -47,7 +49,6 @@ const Leaderboard = () => {
             });
 
             if (res.status === 200) {
-                console.log(res);
                 console.log("Result Generated");
                 toast({
                     title: "Result Generated",
@@ -80,33 +81,86 @@ const Leaderboard = () => {
         }
     };
 
+    const handleResetCodechefUser = async () => {
+        setIsResetingUser(true);
+
+        try {
+            const response = await axios.put(
+                `${backendUrl}/api/contests/codechef/update/allusers`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${apiKey}`,
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                console.log(response);
+                console.log("Users Reset");
+                toast({
+                    title: "Users Reset",
+                    description: "Users reset successfully",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            toast({
+                title: "Error",
+                description: "Error resetting users",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
+        }finally {
+            setIsResetingUser(false);
+        }
+    };
 
     return (
-        <div className="flex flex-col justify-around space-y-5">
+        <div className="mb-10 flex flex-col justify-around space-y-5">
             {challengesData.map((challenge, index) => (
-                <div key={index} className="flex items-center justify-between border border-zinc-700 rounded-xl p-5 bg-zinc-900/10">
-                    <div className="flex items-center">
+                <div key={index} className="flex flex-row min-[320px]:max-lg:flex-col items-center justify-between border border-zinc-700 rounded-xl p-5 bg-zinc-900/10">
+                    <div className="flex items-center my-5 mx-2">
                         <SiCodechef className="text-7xl text-codechef" />
                         <h2 className="text-lg font-semibold text-gray-400 ml-2">{challenge.name}</h2>
                     </div>
-                    <div className="flex space-x-3">
+                    <div className="flex flex-col md:flex-row justify-center items-center md:space-x-3">
                         {challenge.platform.toLowerCase().split(' ')[0] === "codechef" && (
                             <>
                                 {userData.role === "admin" && (
-                                    <Button
-                                        isLoading={isGeneratingResult}
-                                        loadingText='Generating Result'
-                                        colorScheme='gray'
-                                        spinnerPlacement='start'
-                                        onClick={handleGenerateStarterResult}
-                                    >
-                                        Generate Result
-                                        <GrResume className="ml-2" />
-                                    </Button>
+                                    <div className="flex justify-center items-center space-x-3">
+                                        <Button
+                                            isLoading={isGeneratingResult}
+                                            loadingText='Generating Result'
+                                            colorScheme='gray'
+                                            spinnerPlacement='start'
+                                            onClick={handleGenerateStarterResult}
+                                            my={`2`}
+                                        >
+                                            Generate Result
+                                            <GrResume className="ml-2" />
+                                        </Button>
+                                        <Button
+                                            isLoading={isResetingUser}
+                                            loadingText='Resetting User'
+                                            bg='red.700'
+                                            _hover={{ bg: 'red.600' }}
+                                            color={'white'}
+                                            spinnerPlacement='start'
+                                            onClick={handleResetCodechefUser}
+                                            my={`2`}
+                                        >
+                                            Reset Users <BiReset className="ml-2" />
+                                        </Button>
+                                    </div>
                                 )}
                                 <Link
-                                    to={`/leaderboard/${challenge.name.toLowerCase().split(' ')[0]}`}
-                                    className="flex justify-end items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+                                    to={`/leaderboard/${challenge.name.toLowerCase()}`}
+                                    className="flex justify-end items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-2"
                                 >
                                     View Results
                                     <AiOutlineArrowRight className="ml-2" />
@@ -117,7 +171,7 @@ const Leaderboard = () => {
                 </div>
             ))}
         </div>
-    )
+    );
 }
 
-export default Leaderboard
+export default Leaderboard;
