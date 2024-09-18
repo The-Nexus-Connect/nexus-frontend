@@ -88,7 +88,7 @@ const Login = () => {
       >
         <h3 className="text-white text-center mb-5">Log In with College ID</h3>
         <FormControl mb="5">
-          <Input
+          <Input required
             type="email"
             name="email"
             placeholder="Email"
@@ -98,7 +98,7 @@ const Login = () => {
         </FormControl>
         <FormControl mb="5">
           <InputGroup size='md'>
-            <Input
+            <Input required
               type={show ? 'text' : 'password'}
               name='password'
               placeholder='Enter password'

@@ -101,14 +101,14 @@ const SignUp = () => {
         <h3 className="text-white text-center mb-5">Sign Up with College ID</h3>
         <Box mb="5">
           <FormControl mb="4">
-            <Input
+            <Input required
               placeholder="Full Name"
               name="username"
               onChange={handleInputChange}
             />
           </FormControl>
           <FormControl mb="4">
-            <Input
+            <Input required
               placeholder="Library ID"
               name="libId"
               onChange={handleInputChange}
@@ -116,7 +116,7 @@ const SignUp = () => {
             />
           </FormControl>
           <FormControl mb="4">
-            <Input
+            <Input required
               placeholder="University Roll No."
               name="rollNo"
               onChange={handleInputChange}
@@ -124,7 +124,7 @@ const SignUp = () => {
             />
           </FormControl>
           <FormControl mb="4">
-            <Input
+            <Input required
               type="email"
               placeholder="Email"
               name="email"
@@ -134,7 +134,7 @@ const SignUp = () => {
           </FormControl>
           <FormControl mb="4">
             <InputGroup size='md'>
-              <Input
+              <Input required
                 type={show ? 'text' : 'password'}
                 name='password'
                 placeholder='Enter password'
@@ -149,24 +149,24 @@ const SignUp = () => {
             </InputGroup>
           </FormControl>
           <Flex mb="4" className="space-x-2">
-            <Select
-              placeholder="Select Branch"
+            <Select required
               name="branch"
               onChange={handleInputChange}
               focusBorderColor='teal.800'
             >
-              <option value="CSE(AI)">CSE(AI)</option>
-              <option value="CSE(AIML)">CSE(AIML)</option>
+              <option style={{ background: 'black' }} value="">Select Branch</option>
+              <option style={{ background: 'black' }} value="CSE(AI)">CSE(AI)</option>
+              <option style={{ background: 'black' }} value="CSE(AIML)">CSE(AIML)</option>
             </Select>
-            <Select
-              placeholder="Select Section"
+            <Select required
               name="section"
               onChange={handleInputChange}
               focusBorderColor='teal.800'
             >
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
+              <option style={{ background: 'black' }} value="">Select Section</option>
+              <option style={{ background: 'black' }} value="A">A</option>
+              <option style={{ background: 'black' }} value="B">B</option>
+              <option style={{ background: 'black' }} value="C">C</option>
             </Select>
           </Flex>
           <Flex className="flex items-center justify-center space-x-2">
