@@ -167,6 +167,7 @@ const SignUp = () => {
               <option style={{ background: 'black' }} value="A">A</option>
               <option style={{ background: 'black' }} value="B">B</option>
               <option style={{ background: 'black' }} value="C">C</option>
+              <option style={{ background: 'black' }} value="D">D</option>
             </Select>
           </Flex>
           <Flex className="flex items-center justify-center space-x-2">
