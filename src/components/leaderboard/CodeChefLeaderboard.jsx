@@ -23,32 +23,52 @@ const CodeChefLeaderboard = () => {
   }, [contestName]);
   console.log(leaderboardsData);
 
-  const categorizeWinnersByContest = () => {
-    const categories = {};
+  // const categorizeWinnersByContest = () => {
+  //   const categories = {};
 
+  //   if (leaderboardsData && leaderboardsData.winners) {
+  //     leaderboardsData.winners.forEach((winner) => {
+  //       const contestName = winner.contestName || 'Unknown Contest';
+
+  //       if (!categories[contestName]) {
+  //         categories[contestName] = [];
+  //       }
+
+  //       categories[contestName].push(winner);
+  //     });
+  //   }
+
+  //   return categories;
+  // };
+
+  const categorizeWinnersByStars = () => {
+    const categories = {};
+  
     if (leaderboardsData && leaderboardsData.winners) {
       leaderboardsData.winners.forEach((winner) => {
         const contestName = winner.contestName || 'Unknown Contest';
-
-        if (!categories[contestName]) {
-          categories[contestName] = [];
+        
+        const stars = contestName + ' - (' + winner.stars + ' Star)' || 'No Stars';
+  
+        if (!categories[stars]) {
+          categories[stars] = [];
         }
-
-        categories[contestName].push(winner);
+  
+        categories[stars].push(winner);
       });
     }
-
+  
     return categories;
   };
 
-  const categories = categorizeWinnersByContest();
+  const categories = categorizeWinnersByStars();
 
   return (
     <div className="mb-10">
       <Tabs isFitted>
         <TabList className="flex justify-between">
-          {Object.keys(categories).map((contestName, index) => (
-            <Tab key={index}>{`${contestName}`}</Tab>
+          {Object.keys(categories).map((stars, index) => (
+            <Tab key={index}>{`${stars}`}</Tab>
           ))}
         </TabList>
         <TabPanels>
