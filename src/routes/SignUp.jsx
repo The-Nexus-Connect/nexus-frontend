@@ -155,8 +155,16 @@ const SignUp = () => {
               focusBorderColor='teal.800'
             >
               <option style={{ background: 'black' }} value="">Select Branch</option>
+              <option style={{ background: 'black' }} value="CSE">CSE</option>
               <option style={{ background: 'black' }} value="CSE(AI)">CSE(AI)</option>
               <option style={{ background: 'black' }} value="CSE(AIML)">CSE(AIML)</option>
+              <option style={{ background: 'black' }} value="CS">CS</option>
+              <option style={{ background: 'black' }} value="CSIT">CSIT</option>
+              <option style={{ background: 'black' }} value="IT">IT</option>
+              <option style={{ background: 'black' }} value="ECE">ECE</option>
+              <option style={{ background: 'black' }} value="ELCE">ELCE</option>
+              <option style={{ background: 'black' }} value="EEE">EEE</option>
+              <option style={{ background: 'black' }} value="ME">ME</option>
             </Select>
             <Select required
               name="section"
@@ -168,6 +176,7 @@ const SignUp = () => {
               <option style={{ background: 'black' }} value="B">B</option>
               <option style={{ background: 'black' }} value="C">C</option>
               <option style={{ background: 'black' }} value="D">D</option>
+              <option style={{ background: 'black' }} value="E">E</option>
             </Select>
           </Flex>
           <Flex className="flex items-center justify-center space-x-2">

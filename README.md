@@ -1,6 +1,6 @@
 # Nexus
 
-##### Connect, Compete, and Thrive Together.
+##### Connect, Compete and Thrive Together.
 
 ### Demo
 
