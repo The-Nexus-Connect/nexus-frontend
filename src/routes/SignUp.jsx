@@ -9,8 +9,10 @@ import {
   Select,
   InputGroup,
   InputRightElement,
+  Image,
 } from "@chakra-ui/react";
 import axios from "axios";
+import logo from '../assets/img/nexus-website-favicon-white.png';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -98,8 +100,13 @@ const SignUp = () => {
         rounded="md"
         method="POST"
       >
-        <h3 className="text-white text-center mb-5">Sign Up with College ID</h3>
-        <Box mb="5">
+        <Image
+          className="h-20 w-20 mx-auto justify-center"
+          src={logo}
+          alt="Logo"
+        />
+        <h3 className="text-white text-center mb-5 font-bold">Sign Up with College ID</h3>
+        <Box>
           <FormControl mb="4">
             <Input required
               placeholder="Full Name"
@@ -205,7 +212,7 @@ const SignUp = () => {
                 window.location.href = "/login";
               }}
             >
-              Log In
+              Already a user? Log in
             </Button>
           </Flex>
         </Box>
