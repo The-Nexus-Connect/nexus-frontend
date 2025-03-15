@@ -165,9 +165,16 @@ const CodeChefLeaderboard = () => {
                     <Text fontSize={["1em", "1.2em"]} fontWeight="bold">
                       {winner.username}
                     </Text>
-                    <Text fontSize={["0.8em", "1em"]} fontWeight="bold">{winner.branch}</Text>
-                    <Text fontSize={["0.8em", "1em"]} fontWeight="bold">{winner.codechefId}</Text>
-                    <Tag style={{ color: "white", backgroundColor: "black" }} fontWeight="bold">
+                    <Text fontSize={["0.8em", "1em"]} fontWeight="bold">
+                      {winner.branch}
+                    </Text>
+                    <Text fontSize={["0.8em", "1em"]} fontWeight="bold">
+                      {winner.codechefId}
+                    </Text>
+                    <Tag
+                      style={{ color: "white", backgroundColor: "black" }}
+                      fontWeight="bold"
+                    >
                       {winner.stars}
                       <AiFillStar className="ml-2" />
                     </Tag>
@@ -180,7 +187,7 @@ const CodeChefLeaderboard = () => {
                   <Thead>
                     <Tr>
                       <Th style={{ fontSize: "1em", fontWeight: "bold" }}>
-                        Position
+                        Rank
                       </Th>
                       <Th style={{ fontSize: "1em", fontWeight: "bold" }}>
                         Name of Participant
@@ -214,20 +221,19 @@ const CodeChefLeaderboard = () => {
                         <Td style={{ textAlign: "center" }}>
                           {getOrdinalSuffix(winnerIndex + 1)}
                         </Td>
-                        <Td
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            borderRadius="full"
-                            boxSize="50px"
-                            as={Avatar}
-                            src={`${backendUrl}${winner.userImage}`}
-                            marginRight="10px"
-                          />
-                          {winner.username}
+                        <Td>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              borderRadius="full"
+                              boxSize="50px"
+                              as={Avatar}
+                              src={`${backendUrl}${winner.userImage}`}
+                              marginRight="10px"
+                            />
+                            {winner.username}
+                          </div>
                         </Td>
                         <Td style={{ textAlign: "center" }}>{winner.branch}</Td>
                         <Td style={{ textAlign: "center" }}>
