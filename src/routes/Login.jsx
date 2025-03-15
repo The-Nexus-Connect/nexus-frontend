@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, useToast, Input, Flex, Box, FormControl, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Button, useToast, Input, Flex, Box, FormControl, InputGroup, InputRightElement, Image } from "@chakra-ui/react";
 import axios from "axios";
+import logo from '../assets/img/nexus-website-favicon-white.png';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -86,7 +87,12 @@ const Login = () => {
         rounded="md"
         method="POST"
       >
-        <h3 className="text-white text-center mb-5">Log In with College ID</h3>
+        <Image
+          className="h-20 w-20 mx-auto justify-center"
+          src={logo}
+          alt="Logo"
+        />
+        <h3 className="text-white text-center mb-5 font-bold">Log In with College ID</h3>
         <FormControl mb="5">
           <Input required
             type="email"
@@ -138,7 +144,7 @@ const Login = () => {
               window.location.href = "/signup";
             }}
           >
-            Sign Up
+            New User? Sign Up
           </Button>
         </Flex>
       </Box>

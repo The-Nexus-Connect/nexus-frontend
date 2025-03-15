@@ -212,7 +212,7 @@ const SignUp = () => {
                 window.location.href = "/login";
               }}
             >
-              Already a user? Log in
+              Already a User? Log In
             </Button>
           </Flex>
         </Box>
