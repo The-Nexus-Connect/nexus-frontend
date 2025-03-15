@@ -28,8 +28,8 @@ const LeftSidebar = () => {
 
     return (
         <div className="h-full w-1/4 flex flex-col justify-between sm:max-lg:w-1/6 min-[320px]:max-sm:hidden">
-            <Box className="flex flex-col items-center my-14">
-                <Avatar size="xl" src={`${backendUrl}${userData.userImage}`} />
+            <Box className="flex flex-col items-center my-11">
+                <Avatar boxSize="150px" src={`${backendUrl}${userData.userImage}`} />
                 <Text mt={2} fontSize="lg" fontWeight="bold">{userData.username}</Text>
             </Box>
             <div className="flex flex-col space-y-5 justify-between my-5">
