@@ -2,17 +2,36 @@ import { Link, useLocation } from 'react-router-dom';
 import { AiFillFlag } from "react-icons/ai";
 import { MdLeaderboard } from 'react-icons/md';
 import { HiSpeakerphone } from 'react-icons/hi';
+import { useEffect, useState } from 'react';
+import { fetchUserData } from '../../../services/userServices';
+import { Avatar, Box, Text } from '@chakra-ui/react';
 
 const LeftSidebar = () => {
+    const [userData, setUserData] = useState({});
+    const location = useLocation();
+    const backendUrl =
+    import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
+
+    useEffect(() => {
+        fetchUserData().then(data => {
+            if (data) {
+                setUserData(data);
+            }
+        });
+    }, []);
+
     const navLinks = [
         { to: '/challenges', name: 'Challenges', icon: <AiFillFlag className="w-5 h-5 mx-2" /> },
         { to: '/leaderboard', name: 'Leaderboard', icon: <MdLeaderboard className="w-5 h-5 mx-2" /> },
-        { to: '/announcement', name: 'Annoucement', icon: <HiSpeakerphone className="w-5 h-5 mx-2" /> },
+        { to: '/announcement', name: 'Announcement', icon: <HiSpeakerphone className="w-5 h-5 mx-2" /> },
     ];
-    const location = useLocation();
 
     return (
         <div className="h-full w-1/4 flex flex-col justify-between sm:max-lg:w-1/6 min-[320px]:max-sm:hidden">
+            <Box className="flex flex-col items-center my-14">
+                <Avatar size="xl" src={`${backendUrl}${userData.userImage}`} />
+                <Text mt={2} fontSize="lg" fontWeight="bold">{userData.username}</Text>
+            </Box>
             <div className="flex flex-col space-y-5 justify-between my-5">
                 {navLinks.map((link) => {
                     const isActive = location.pathname.startsWith(link.to);
