@@ -121,7 +121,7 @@ const Leaderboard = () => {
     };
 
     return (
-        <div className="mb-10 flex flex-col justify-around space-y-5">
+        <div className="mb-10 flex flex-col justify-around space-y-5 m-2">
             {challengesData.map((challenge, index) => (
                 <div key={index} className="flex flex-row min-[320px]:max-lg:flex-col items-center justify-between border border-zinc-700 rounded-xl p-5 bg-zinc-900/10">
                     <div className="flex items-center my-5 mx-2">
