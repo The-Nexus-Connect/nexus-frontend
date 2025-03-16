@@ -28,6 +28,7 @@ const SignUp = () => {
 
   const [show, setShow] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -83,6 +84,8 @@ const SignUp = () => {
       return;
     }
 
+    setLoading(true); // Disable button
+
     try {
       const response = await axios.post(`${backendUrl}/api/users/register`, formData, {
         headers: {
@@ -110,6 +113,8 @@ const SignUp = () => {
         duration: 3000,
         isClosable: true,
       });
+    } finally {
+      setLoading(false); // Enable button after response
     }
   };
 
@@ -184,7 +189,7 @@ const SignUp = () => {
 
         {/* Submit Button */}
         <Flex className="flex items-center justify-center space-x-2">
-          <Button type="submit" bg="teal.800" color="white" fontWeight="bold" isDisabled={!!error}>
+          <Button type="submit" bg="teal.800" color="white" fontWeight="bold" isDisabled={loading || !!error} isLoading={loading}>
             Sign Up
           </Button>
           <Button bg="white" color="teal.800" fontWeight="bold" onClick={() => window.location.href = "/login"}>
