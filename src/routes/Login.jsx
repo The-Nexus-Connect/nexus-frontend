@@ -19,6 +19,9 @@ const Login = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(true); 
+
   const apiKey = import.meta.env.VITE_API_KEY;
   const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
   const [show, setShow] = useState(false);
@@ -28,6 +31,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -105,6 +109,8 @@ const Login = () => {
           isClosable: true,
         });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -114,6 +120,10 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
+
+    if (name === "password") {
+      setIsPasswordValid(value.length === 0 || value.length >= 8); 
+    }
   };
 
   return (
@@ -160,7 +170,14 @@ const Login = () => {
           </InputGroup>
         </FormControl>
         <Flex className="flex items-center justify-center space-x-2">
-          <Button type="submit" bg="teal.800" color="white" fontWeight="bold">
+          <Button
+            type="submit"
+            bg="teal.800"
+            color="white"
+            fontWeight="bold"
+            isDisabled={loading || !isPasswordValid}
+            isLoading={loading}
+          >
             Log In
           </Button>
           <Button bg="white" color="teal.800" fontWeight="bold" onClick={() => window.location.href = "/signup"}>
