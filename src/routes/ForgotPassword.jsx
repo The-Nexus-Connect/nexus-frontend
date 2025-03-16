@@ -14,13 +14,14 @@ import logo from '../assets/img/nexus-website-favicon-white.png';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND_URI || 'http://localhost:5001';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email.endsWith('@kiet.edu')) {
       toast({
         title: 'Invalid Email Domain',
@@ -31,6 +32,8 @@ const ForgotPassword = () => {
       });
       return;
     }
+
+    setLoading(true);
 
     try {
       const response = await axios.post(`${backendUrl}/api/users/forgot-password`, { email });
@@ -43,7 +46,7 @@ const ForgotPassword = () => {
       });
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'An error occurred';
-      
+
       toast({
         title: 'Error',
         description: errorMessage,
@@ -63,6 +66,8 @@ const ForgotPassword = () => {
 
         setTimeout(() => navigate('/signup'), 3000);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,6 +112,8 @@ const ForgotPassword = () => {
             px={4}
             rounded="md"
             _focus={{ outline: 'none', shadow: 'outline' }}
+            isLoading={loading}
+            isDisabled={loading}
           >
             Submit
           </Button>
