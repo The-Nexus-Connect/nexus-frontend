@@ -20,9 +20,7 @@ const Login = () => {
   });
 
   const apiKey = import.meta.env.VITE_API_KEY;
-  const backendUrl =
-    import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
-  const [token, setToken] = useState("");
+  const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
   const [show, setShow] = useState(false);
   const toast = useToast();
 
@@ -44,10 +42,8 @@ const Login = () => {
       );
 
       const data = response.data;
-      console.log(data);
 
       if (data.accessToken) {
-        setToken(data.accessToken);
         localStorage.setItem("token", data.accessToken);
         e.target.reset();
         toast({
@@ -58,24 +54,57 @@ const Login = () => {
           isClosable: true,
         });
         window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 401 && data?.error === "Incorrect password") {
+          toast({
+            title: "Incorrect Password.",
+            description: "Please check your password and try again.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else if (status === 404 && data?.error === "User not found") {
+          toast({
+            title: "User Not Found.",
+            description: "Redirecting to Signup...",
+            status: "info",
+            duration: 3000,
+            isClosable: true,
+          });
+          setTimeout(() => {
+            window.location.href = "/signup";
+          }, 3000);
+        } else {
+          toast({
+            title: "Login Failed.",
+            description: data?.message || "An unexpected error occurred. Check console for details.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      } else if (error.request) {
+        toast({
+          title: "Network Error.",
+          description: "Unable to connect to the server. Please check your internet connection.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         toast({
-          title: "Login failed.",
-          description: "Please check your credentials.",
+          title: "Error.",
+          description: "Something went wrong. Please try again.",
           status: "error",
           duration: 3000,
           isClosable: true,
         });
       }
-    } catch (error) {
-      console.error("Login failed: " + error);
-      toast({
-        title: "An error occurred.",
-        description: "Please try again later.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
     }
   };
 
@@ -99,11 +128,7 @@ const Login = () => {
         rounded="md"
         method="POST"
       >
-        <Image
-          className="h-20 w-20 mx-auto justify-center"
-          src={logo}
-          alt="Logo"
-        />
+        <Image className="h-20 w-20 mx-auto" src={logo} alt="Logo" />
         <h3 className="text-white text-center mb-5 font-bold">
           Log In with College ID
         </h3>
@@ -135,50 +160,17 @@ const Login = () => {
           </InputGroup>
         </FormControl>
         <Flex className="flex items-center justify-center space-x-2">
-          <Button
-            type="submit"
-            bg="teal.800"
-            _hover={{ bg: "teal.700" }}
-            color="white"
-            fontWeight="bold"
-            py={2}
-            px={4}
-            rounded="md"
-            _focus={{ outline: "none", shadow: "outline" }}
-          >
+          <Button type="submit" bg="teal.800" color="white" fontWeight="bold">
             Log In
           </Button>
-          <Button
-            bg="white"
-            color="teal.800"
-            fontWeight="bold"
-            py={2}
-            px={4}
-            rounded="md"
-            _focus={{ outline: "none", shadow: "outline" }}
-            onClick={() => {
-              window.location.href = "/signup";
-            }}
-          >
+          <Button bg="white" color="teal.800" fontWeight="bold" onClick={() => window.location.href = "/signup"}>
             New User? Sign Up
           </Button>
         </Flex>
         <Flex className="flex items-center justify-center space-x-2">
-        <Button
-          bg="white"
-          color="teal.800"
-          fontWeight="bold"
-          my={2}
-          py={2}
-          px={4}
-          rounded="md"
-          _focus={{ outline: "none", shadow: "outline" }}
-          onClick={() => {
-            window.location.href = "/forgot-password";
-          }}
-        >
-          Forgot Password? Reset
-        </Button>
+          <Button bg="white" color="teal.800" fontWeight="bold" my={2} onClick={() => window.location.href = "/forgot-password"}>
+            Forgot Password? Reset
+          </Button>
         </Flex>
       </Box>
     </Flex>
