@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Button,
@@ -14,6 +15,7 @@ import logo from '../assets/img/nexus-website-favicon-white.png';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const toast = useToast();
+  const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND_URI || 'http://localhost:5001';
 
   const handleSubmit = async (e) => {
@@ -28,13 +30,27 @@ const ForgotPassword = () => {
         isClosable: true,
       });
     } catch (error) {
+      const errorMessage = error.response?.data?.message || 'An error occurred';
+      
       toast({
         title: 'Error',
-        description: error.response.data.message,
+        description: errorMessage,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
+
+      if (error.response?.status === 404) {
+        toast({
+          title: 'User Not Found',
+          description: 'No account associated with this email. Redirecting to signup...',
+          status: 'info',
+          duration: 5000,
+          isClosable: true,
+        });
+
+        setTimeout(() => navigate('/signup'), 3000); // Redirect to signup after 3 seconds
+      }
     }
   };
 
