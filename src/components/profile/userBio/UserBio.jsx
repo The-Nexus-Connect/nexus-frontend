@@ -144,7 +144,7 @@ const UserBio = () => {
         ) : (
           <div className="flex justify-center items-center flex-col">
             <Tag
-              className="mt-1 h-20 w-72 overflow-hidden text-ellipsis whitespace-pre-wrap border border-gray-700 p-2 rounded text-white"
+              className="text-left mt-1 h-20 w-72 overflow-hidden text-ellipsis whitespace-pre-wrap border border-gray-700 p-2 rounded text-white"
               sx={{
                 bg: "zinc.950",
                 color: "white",
