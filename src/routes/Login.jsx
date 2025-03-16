@@ -1,7 +1,17 @@
 import { useState } from "react";
-import { Button, useToast, Input, Flex, Box, FormControl, InputGroup, InputRightElement, Image } from "@chakra-ui/react";
+import {
+  Button,
+  useToast,
+  Input,
+  Flex,
+  Box,
+  FormControl,
+  InputGroup,
+  InputRightElement,
+  Image,
+} from "@chakra-ui/react";
 import axios from "axios";
-import logo from '../assets/img/nexus-website-favicon-white.png';
+import logo from "../assets/img/nexus-website-favicon-white.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,12 +20,13 @@ const Login = () => {
   });
 
   const apiKey = import.meta.env.VITE_API_KEY;
-  const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
   const [token, setToken] = useState("");
   const [show, setShow] = useState(false);
   const toast = useToast();
 
-  const handleShow = () => setShow(!show)
+  const handleShow = () => setShow(!show);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,9 +38,10 @@ const Login = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`
+            Authorization: `Bearer ${apiKey}`,
           },
-        });
+        }
+      );
 
       const data = response.data;
       console.log(data);
@@ -76,7 +88,7 @@ const Login = () => {
   };
 
   return (
-    <Flex className="flex justify-center items-center h-screen bg-zinc-900" >
+    <Flex className="flex justify-center items-center h-screen bg-zinc-900">
       <Box
         as="form"
         onSubmit={handleSubmit}
@@ -92,28 +104,32 @@ const Login = () => {
           src={logo}
           alt="Logo"
         />
-        <h3 className="text-white text-center mb-5 font-bold">Log In with College ID</h3>
+        <h3 className="text-white text-center mb-5 font-bold">
+          Log In with College ID
+        </h3>
         <FormControl mb="5">
-          <Input required
+          <Input
+            required
             type="email"
             name="email"
             placeholder="Email"
             onChange={handleInputChange}
-            focusBorderColor='teal.800'
+            focusBorderColor="teal.800"
           />
         </FormControl>
         <FormControl mb="5">
-          <InputGroup size='md'>
-            <Input required
-              type={show ? 'text' : 'password'}
-              name='password'
-              placeholder='Enter password'
+          <InputGroup size="md">
+            <Input
+              required
+              type={show ? "text" : "password"}
+              name="password"
+              placeholder="Enter password"
               onChange={handleInputChange}
-              focusBorderColor='teal.800'
+              focusBorderColor="teal.800"
             />
-            <InputRightElement width='4.5rem'>
-              <Button h='1.75rem' size='sm' onClick={handleShow}>
-                {show ? 'Hide' : 'Show'}
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleShow}>
+                {show ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
           </InputGroup>
@@ -146,6 +162,23 @@ const Login = () => {
           >
             New User? Sign Up
           </Button>
+        </Flex>
+        <Flex className="flex items-center justify-center space-x-2">
+        <Button
+          bg="white"
+          color="teal.800"
+          fontWeight="bold"
+          my={2}
+          py={2}
+          px={4}
+          rounded="md"
+          _focus={{ outline: "none", shadow: "outline" }}
+          onClick={() => {
+            window.location.href = "/forgot-password";
+          }}
+        >
+          Forgot Password? Reset
+        </Button>
         </Flex>
       </Box>
     </Flex>
