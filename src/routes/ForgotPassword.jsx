@@ -20,6 +20,18 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!email.endsWith('@kiet.edu')) {
+      toast({
+        title: 'Invalid Email Domain',
+        description: 'Please use a @kiet.edu email address.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
       const response = await axios.post(`${backendUrl}/api/users/forgot-password`, { email });
       toast({
@@ -49,7 +61,7 @@ const ForgotPassword = () => {
           isClosable: true,
         });
 
-        setTimeout(() => navigate('/signup'), 3000); // Redirect to signup after 3 seconds
+        setTimeout(() => navigate('/signup'), 3000);
       }
     }
   };
@@ -78,7 +90,7 @@ const ForgotPassword = () => {
           <Input
             required
             type="email"
-            placeholder="Enter your email"
+            placeholder="Email (must be @kiet.edu)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             focusBorderColor="teal.800"
