@@ -13,6 +13,10 @@ const CodingPlatformsSection = () => {
     const [updatedCodechefId, setUpdatedCodechefId] = useState("");
     const [updatedLeetcodeId, setUpdatedLeetcodeId] = useState("");
     const [updatedGithubId, setUpdatedGithubId] = useState("");
+    const [isUpdatingCodechef, setIsUpdatingCodechef] = useState(false);
+    const [isUpdatingCodeforces, setIsUpdatingCodeforces] = useState(false);
+    const [isUpdatingLeetcode, setIsUpdatingLeetcode] = useState(false);
+    const [isUpdatingGithub, setIsUpdatingGithub] = useState(false);
 
     useEffect(() => {
         fetchUserData().then((data) => {
@@ -52,10 +56,13 @@ const CodingPlatformsSection = () => {
             return;
         }
 
+        setIsUpdatingCodechef(true);
+
         const isValid = await isValidCodechefId(updatedCodechefId);
 
         if (!isValid) {
             showToast("error", "The Codechef ID is invalid.");
+            setIsUpdatingCodechef(false);
             return;
         }
 
@@ -76,15 +83,19 @@ const CodingPlatformsSection = () => {
         } catch (error) {
             console.error("Error updating Codechef ID", error);
             showToast("error", "Error updating Codechef ID");
+        } finally {
+            setIsUpdatingCodechef(false);
         }
     };
 
     const updateCodechefProfile = async () => {
+        setIsUpdatingCodechef(true);
 
         const isValid = await isValidCodechefId(updatedCodechefId);
 
         if (!isValid) {
             showToast("error", "The Codechef ID is invalid.");
+            setIsUpdatingCodechef(false);
             return;
         }
 
@@ -108,6 +119,8 @@ const CodingPlatformsSection = () => {
         } catch (error) {
             console.error("Error updating Codechef Profile", error);
             showToast("error", "Error updating Codechef Profile");
+        } finally {
+            setIsUpdatingCodechef(false);
         }
     };
 
@@ -116,6 +129,9 @@ const CodingPlatformsSection = () => {
             showToast("warning", "The Codeforces ID cannot be empty.");
             return;
         }
+
+        setIsUpdatingCodeforces(true);
+
         try {
             const response = await axios.put(
                 `${backendUrl}/api/users/${userData._id}`,
@@ -142,19 +158,10 @@ const CodingPlatformsSection = () => {
         } catch (error) {
             console.error("Error updating Codeforces ID:", error);
             showToast("error", "Error updating Codeforces ID");
+        } finally {
+            setIsUpdatingCodeforces(false);
         }
     };
-
-    // const isValidLeetcodeId = async (id) => {
-
-    //   try {
-    //     const response = await axios.get(`https://leetcode.com/${id}/`);
-
-    //     return response.status === 200;
-    //   } catch (error) {
-    //     return false;
-    //   }
-    // };
 
     const handleUpdateLeetcodeId = async () => {
         if (!updatedLeetcodeId.trim()) {
@@ -162,12 +169,7 @@ const CodingPlatformsSection = () => {
             return;
         }
 
-        // const isValid = await isValidLeetcodeId(updatedLeetcodeId);
-
-        // if (!isValid) {
-        //   showToast("error", "The Leetcode ID is invalid.");
-        //   return;
-        // }
+        setIsUpdatingLeetcode(true);
 
         try {
             const response = await axios.put(
@@ -189,19 +191,10 @@ const CodingPlatformsSection = () => {
         } catch (error) {
             console.error("Error updating Leetcode ID", error);
             showToast("error", "Error updating Leetcode ID");
+        } finally {
+            setIsUpdatingLeetcode(false);
         }
     };
-
-    // const isValidGithubId = async (id) => {
-    //   try {
-    //     const response = await axios.get(`https://www.github.com/${id}`);
-
-    //     return response.status === 200;
-    //   } catch (error) {
-    //     return false;
-    //   }
-    // };
-
 
     const handleUpdateGithubId = async () => {
         if (!updatedGithubId.trim()) {
@@ -209,12 +202,7 @@ const CodingPlatformsSection = () => {
             return;
         }
 
-        // const isValid = await isValidGithubId(updatedGithubId);
-
-        // if (!isValid) {
-        //   showToast("error", "The Github ID is invalid.");
-        //   return;
-        // }
+        setIsUpdatingGithub(true);
 
         try {
             const response = await axios.put(
@@ -236,6 +224,8 @@ const CodingPlatformsSection = () => {
         } catch (error) {
             console.error("Error updating Github ID", error);
             showToast("error", "Error updating Github ID");
+        } finally {
+            setIsUpdatingGithub(false);
         }
     };
 
@@ -276,8 +266,10 @@ const CodingPlatformsSection = () => {
                                 <svg
                                     type="button"
                                     onClick={() => {
-                                        handleUpdateCodechefId();
-                                        updateCodechefProfile();
+                                        if (!isUpdatingCodechef) {
+                                            handleUpdateCodechefId();
+                                            updateCodechefProfile();
+                                        }
                                     }}
                                     className="absolute ml-[90%] cursor-pointer "
                                     xmlns="http://www.w3.org/2000/svg"
@@ -305,6 +297,7 @@ const CodingPlatformsSection = () => {
                                     value={updatedCodechefId}
                                     placeholder="CodeChef Id"
                                     onChange={(e) => setUpdatedCodechefId(e.target.value)}
+                                    disabled={isUpdatingCodechef}
                                 />
                             </div>
                         </div>
@@ -344,7 +337,9 @@ const CodingPlatformsSection = () => {
                                 <svg
                                     type="button"
                                     onClick={() => {
-                                        handleUpdateCodeforcesId();
+                                        if (!isUpdatingCodeforces) {
+                                            handleUpdateCodeforcesId();
+                                        }
                                     }}
                                     className="absolute ml-[90%]  cursor-pointer "
                                     xmlns="http://www.w3.org/2000/svg"
@@ -374,6 +369,7 @@ const CodingPlatformsSection = () => {
                                     onChange={(e) =>
                                         setUpdatedCodeforcesId(e.target.value)
                                     }
+                                    disabled={isUpdatingCodeforces}
                                 />
                             </div>
                         </div>
@@ -414,7 +410,9 @@ const CodingPlatformsSection = () => {
                                 <svg
                                     type="button"
                                     onClick={() => {
-                                        handleUpdateLeetcodeId();
+                                        if (!isUpdatingLeetcode) {
+                                            handleUpdateLeetcodeId();
+                                        }
                                     }}
                                     className="absolute ml-[90%]  cursor-pointer "
                                     xmlns="http://www.w3.org/2000/svg"
@@ -442,6 +440,7 @@ const CodingPlatformsSection = () => {
                                     value={updatedLeetcodeId}
                                     placeholder="LeetCode Id"
                                     onChange={(e) => setUpdatedLeetcodeId(e.target.value)}
+                                    disabled={isUpdatingLeetcode}
                                 />
                             </div>
                         </div>
@@ -480,7 +479,9 @@ const CodingPlatformsSection = () => {
                                 <svg
                                     type="button"
                                     onClick={() => {
-                                        handleUpdateGithubId();
+                                        if (!isUpdatingGithub) {
+                                            handleUpdateGithubId();
+                                        }
                                     }}
                                     className="absolute ml-[90%] cursor-pointer "
                                     xmlns="http://www.w3.org/2000/svg"
@@ -508,6 +509,7 @@ const CodingPlatformsSection = () => {
                                     value={updatedGithubId}
                                     placeholder="GitHub Id"
                                     onChange={(e) => setUpdatedGithubId(e.target.value)}
+                                    disabled={isUpdatingGithub}
                                 />
                             </div>
                         </div>
