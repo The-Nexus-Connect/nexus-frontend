@@ -25,8 +25,6 @@ import { fetchLeaderboardsData } from "../../services/leaderboardServices";
 const CodeChefLeaderboard = () => {
   const { contestName } = useParams();
   const [leaderboardsData, setLeaderboardsData] = useState([]);
-  const backendUrl =
-    import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -159,7 +157,7 @@ const CodeChefLeaderboard = () => {
                       borderRadius="full"
                       boxSize={["80px", "100px", "120px"]}
                       as={Avatar}
-                      src={`${backendUrl}${winner.userImage}`}
+                      src={winner.userImage}
                       margin="10px auto"
                     />
                     <Text fontSize={["1em", "1.2em"]} fontWeight="bold">
@@ -229,7 +227,7 @@ const CodeChefLeaderboard = () => {
                               borderRadius="full"
                               boxSize="50px"
                               as={Avatar}
-                              src={`${backendUrl}${winner.userImage}`}
+                              src={winner.userImage}
                               marginRight="10px"
                             />
                             {winner.username}
