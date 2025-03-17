@@ -15,8 +15,6 @@ import { Link } from 'react-router-dom';
 import { fetchUserData } from '../../../services/userServices';
 
 const Profile = () => {
-    const backendUrl =
-    import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
     const [userData, setUserData] = useState({});
 
     const handleSignOut = () => {
@@ -35,7 +33,7 @@ const Profile = () => {
     return (
         <div>
             <Menu>
-                <MenuButton as={Avatar} size="md" cursor={'pointer'} src={`${backendUrl}${userData.userImage}`} />
+                <MenuButton as={Avatar} size="md" cursor={'pointer'} src={userData.userImage} />
                 <MenuList sx={{ backgroundColor: 'black' }}>
                     <MenuGroup title={userData.username}>
                         <Link to="/profile">

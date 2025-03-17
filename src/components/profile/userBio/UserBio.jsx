@@ -1,4 +1,4 @@
-import { Avatar, Image, Tag } from "@chakra-ui/react";
+import { Avatar, Image, Tag, Spinner } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import axios from "axios";
@@ -15,6 +15,7 @@ const UserBio = () => {
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isImageUploadVisible, setIsImageUploadVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchUserData().then((data) => {
@@ -39,6 +40,7 @@ const UserBio = () => {
       showToast("warning", "The Bio cannot be empty.");
       return;
     }
+    setIsLoading(true);
     try {
       const response = await axios.put(
         `${backendUrl}/api/users/${userData._id}`,
@@ -58,6 +60,8 @@ const UserBio = () => {
     } catch (error) {
       console.error("Error updating Bio", error);
       showToast("error", "Error updating Bio");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,9 +70,11 @@ const UserBio = () => {
       showToast("warning", "Please select an image to upload.");
       return;
     }
+
     const formData = new FormData();
     formData.append("image", selectedImage);
 
+    setIsLoading(true);
     try {
       const response = await axios.put(
         `${backendUrl}/api/users/upload/${userData._id}`,
@@ -87,8 +93,10 @@ const UserBio = () => {
         setIsImageUploadVisible(false);
       }
     } catch (error) {
-      console.error("Error uploading image", error);
+      console.error("Error uploading image:", error);
       showToast("error", "Error uploading image");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -99,7 +107,7 @@ const UserBio = () => {
           borderRadius="full"
           boxSize="150px"
           as={Avatar}
-          src={`${backendUrl}${userData.userImage}`}
+          src={userData.userImage}
         />
       </div>
       <div className="w-full flex flex-col items-center justify-center mx-1">
@@ -126,8 +134,9 @@ const UserBio = () => {
                 className="p-1 bg-teal-800 hover:bg-teal-700 text-white text-xs font-bold rounded focus:outline-none focus:shadow-outline"
                 type="button"
                 onClick={handleUpdateBio}
+                disabled={isLoading}
               >
-                Upload
+                {isLoading ? <Spinner size="sm" /> : "Upload"}
               </button>
               <button
                 className="p-1 bg-red-800 hover:bg-red-700 text-white text-xs font-bold rounded focus:outline-none focus:shadow-outline"
@@ -136,6 +145,7 @@ const UserBio = () => {
                   setIsEditingBio(false);
                   setUpdatedBio(userData.bio);
                 }}
+                disabled={isLoading}
               >
                 Cancel
               </button>
@@ -178,6 +188,7 @@ const UserBio = () => {
           className="mt-20 p-1 bg-teal-800 hover:bg-teal-700 text-white text-sm font-bold rounded focus:outline-none focus:shadow-outline"
           type="button"
           onClick={() => setIsImageUploadVisible(true)}
+          disabled={isLoading}
         >
           Update Profile Picture
         </button>
@@ -199,6 +210,7 @@ const UserBio = () => {
                 setSelectedImage(file);
               }
             }}
+            disabled={isLoading}
           />
           <p className="text-sm text-gray-400 mt-1">Max file size: 1MB</p>
           <div className="flex mt-2 space-x-2">
@@ -206,13 +218,15 @@ const UserBio = () => {
               className="px-1 py-1 bg-teal-800 hover:bg-teal-700 text-white text-xs font-bold rounded focus:outline-none focus:shadow-outline"
               type="button"
               onClick={handleImageUpload}
+              disabled={isLoading}
             >
-              Upload
+              {isLoading ? <Spinner size="sm" /> : "Upload"}
             </button>
             <button
               className="px-1 py-1 bg-red-800 hover:bg-red-700 text-white text-xs font-bold rounded focus:outline-none focus:shadow-outline"
               type="button"
               onClick={() => setIsImageUploadVisible(false)}
+              disabled={isLoading}
             >
               Cancel
             </button>
