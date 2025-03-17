@@ -106,13 +106,29 @@ const SignUp = () => {
         window.location.href = "/";
       }
     } catch (error) {
-      toast({
-        title: "An error occurred.",
-        description: "Please try again later.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      if (error.response && error.response.status === 409) {
+        // Assuming 409 is the status code for "User already exists"
+        toast({
+          title: "User already exists!",
+          description: "Please login with your existing account.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        // Redirect to login page after 3 seconds
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 3000);
+      } else {
+        toast({
+          title: "An error occurred.",
+          description: "Please try again later.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     } finally {
       setLoading(false); // Enable button after response
     }
