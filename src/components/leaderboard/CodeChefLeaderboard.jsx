@@ -118,30 +118,36 @@ const CodeChefLeaderboard = () => {
     Object.keys(categories).forEach((yearOfStudy) => {
       const yearData = [];
 
+      // Add a header for the year
+      yearData.push([`Year - ${yearOfStudy}`]);
+
       Object.keys(categories[yearOfStudy]).forEach((stars) => {
-        // Add a header row for the stars category
+        // Add a header for the stars category
         yearData.push([`${stars}`]);
+
+        // Add column headers
         yearData.push([
           "Rank",
           "Student Name",
           "Year",
           "Branch",
+          "Section",
           "Codechef Id",
           "Stars",
-          "Global Rank",
-          "Section",
+          "CC Rank",
         ]);
 
+        // Add rows for each winner
         categories[yearOfStudy][stars].forEach((winner, index) => {
           yearData.push([
             getOrdinalSuffix(index + 1),
             winner.username,
             winner.yearOfStudy,
             winner.branch,
+            winner.section,
             winner.codechefId,
             winner.stars,
             winner.contestGlobalRank,
-            winner.section,
           ]);
         });
 
@@ -151,6 +157,8 @@ const CodeChefLeaderboard = () => {
 
       // Create a worksheet for the year
       const worksheet = XLSX.utils.aoa_to_sheet(yearData);
+
+      // Add the worksheet to the workbook
       XLSX.utils.book_append_sheet(workbook, worksheet, `Year ${yearOfStudy}`);
     });
 
@@ -195,7 +203,7 @@ const CodeChefLeaderboard = () => {
                   {Object.keys(categories[yearOfStudy]).map((stars, index) => (
                     <Tab
                       key={index}
-                      _selected={{ color: "white", bg: "orange" }} 
+                      _selected={{ color: "white", bg: "orange" }}
                       style={{ fontSize: "1.2em", fontWeight: "bold" }}
                     >{`${stars}`}</Tab>
                   ))}
@@ -218,8 +226,8 @@ const CodeChefLeaderboard = () => {
                             borderWidth="1px"
                             borderRadius="lg"
                             overflow="hidden"
-                            width={["100%", "45%", "30%"]} 
-                            mb="10px" 
+                            width={["100%", "45%", "30%"]}
+                            mb="10px"
                           >
                             <Text fontSize={["2em", "2em"]} fontWeight="bold">
                               {getMedalType(winnerIndex + 1)}{" "}
