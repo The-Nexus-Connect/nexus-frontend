@@ -24,6 +24,7 @@ const SignUp = () => {
     branch: "",
     rollNo: "",
     section: "",
+    yearOfStudy: "", 
   });
 
   const [show, setShow] = useState(false);
@@ -135,8 +136,22 @@ const SignUp = () => {
   };
 
   return (
-    <Flex className="flex justify-center items-center h-screen bg-zinc-900">
-      <Box as="form" onSubmit={handleSubmit} w="sm" p="8" bg="black" boxShadow="2xl" rounded="md" method="POST">
+    <Flex
+      className="flex justify-center items-center bg-zinc-900"
+      minHeight="100vh" 
+      overflowY="auto" 
+    >
+      <Box
+        as="form"
+        onSubmit={handleSubmit}
+        w="sm"
+        p="8"
+        bg="black"
+        boxShadow="2xl"
+        rounded="md"
+        method="POST"
+        my="8" 
+      >
         <Image className="h-20 w-20 mx-auto" src={logo} alt="Logo" />
         <h3 className="text-white text-center mb-5 font-bold">Sign Up with College ID</h3>
 
@@ -202,6 +217,17 @@ const SignUp = () => {
             <option style={{ background: "black" }} value="E">E</option>
           </Select>
         </Flex>
+
+        {/* Year of Study Selection */}
+        <FormControl mb="4">
+          <Select required name="yearOfStudy" onChange={handleInputChange} focusBorderColor="teal.800">
+            <option style={{ background: "black" }} value="">Select Year of Study</option>
+            <option style={{ background: "black" }} value="1">1st Year</option>
+            <option style={{ background: "black" }} value="2">2nd Year</option>
+            <option style={{ background: "black" }} value="3">3rd Year</option>
+            <option style={{ background: "black" }} value="4">4th Year</option>
+          </Select>
+        </FormControl>
 
         {/* Submit Button */}
         <Flex className="flex items-center justify-center space-x-2">
