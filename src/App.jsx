@@ -11,6 +11,8 @@ import { fetchUserData } from './services/userServices';
 import NotFound from './routes/NotFound';
 import Loading from './routes/Loading';
 import CodeChefLeaderboard from './components/leaderboard/CodeChefLeaderboard';
+import ForgotPassword from './routes/ForgotPassword';
+import ResetPassword from './routes/ResetPassword';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -87,10 +89,12 @@ function App() {
             <>
               <Route
                 path="/"
-                element={<Navigate to="/login" />}
+                element={<Navigate to="/signup" />}
               />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<NotFound />} />
             </>
           )}

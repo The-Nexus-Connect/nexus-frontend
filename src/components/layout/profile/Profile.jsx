@@ -33,7 +33,7 @@ const Profile = () => {
     return (
         <div>
             <Menu>
-                <MenuButton as={Avatar} size="sm" cursor={'pointer'} src={userData.userImg} />
+                <MenuButton as={Avatar} size="md" cursor={'pointer'} src={userData.userImage} />
                 <MenuList sx={{ backgroundColor: 'black' }}>
                     <MenuGroup title={userData.username}>
                         <Link to="/profile">
@@ -43,12 +43,12 @@ const Profile = () => {
                         </Link>
                     </MenuGroup>
                     <MenuDivider />
-                    <MenuGroup title='Help'>
-                        <Link to="/settings">
+                    <MenuGroup>
+                        {/* <Link to="/settings">
                             <MenuItem sx={{ backgroundColor: 'black', _hover: { bg: 'zinc.800' } }}>
                                 <MdOutlineSettings className="text-xl mx-2" /> Settings
                             </MenuItem>
-                        </Link>
+                        </Link> */}
                         <MenuItem sx={{ backgroundColor: 'black', _hover: { bg: 'zinc.800' } }} onClick={handleSignOut}>
                             <AiOutlineLogout className="text-xl mx-2 text-red-500" /> Sign Out
                         </MenuItem>

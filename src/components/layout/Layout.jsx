@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
   return (
     <div className="w-full h-screen flex flex-col bg-zinc-950">
       <div className="navbar flex justify-between items-center p-2">
-        <Link to="/" className="h-14 w-14 mx-8">
+        <Link to="/" className="h-14 w-14">
           <img src={logo} alt="Logo" />
         </Link>
         {

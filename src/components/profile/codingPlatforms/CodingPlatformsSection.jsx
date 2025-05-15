@@ -4,7 +4,6 @@ import { useToast } from '@chakra-ui/react';
 import axios from "axios";
 
 const CodingPlatformsSection = () => {
-
     const toast = useToast();
     const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
     const apiKey = import.meta.env.VITE_API_KEY;
@@ -38,8 +37,7 @@ const CodingPlatformsSection = () => {
                 headers: {
                     Authorization: `Bearer ${apiKey}`,
                 },
-            }
-            );
+            });
             return response.status === 200;
         } catch (error) {
             return false;
@@ -60,13 +58,16 @@ const CodingPlatformsSection = () => {
         }
 
         try {
-            const response = await axios.put(`${backendUrl}/api/users/${userData._id}`, {
-                codechefId: updatedCodechefId,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${apiKey}`,
+            const response = await axios.put(
+                `${backendUrl}/api/users/${userData._id}`,
+                {
+                    codechefId: updatedCodechefId,
                 },
-            }
+                {
+                    headers: {
+                        Authorization: `Bearer ${apiKey}`,
+                    },
+                }
             );
 
             if (response.status === 200) {
@@ -80,7 +81,6 @@ const CodingPlatformsSection = () => {
     };
 
     const updateCodechefProfile = async () => {
-
         const isValid = await isValidCodechefId(updatedCodechefId);
 
         if (!isValid) {
@@ -133,10 +133,7 @@ const CodingPlatformsSection = () => {
                 showToast("success", "Codeforces ID updated successfully");
                 setUserData({ ...userData, codeforcesId: updatedCodeforcesId });
             } else {
-                console.error(
-                    "Codeforces ID update failed with status:",
-                    response.status
-                );
+                console.error("Codeforces ID update failed with status:", response.status);
                 showToast("error", "Codeforces ID update failed");
             }
         } catch (error) {
@@ -145,29 +142,11 @@ const CodingPlatformsSection = () => {
         }
     };
 
-    // const isValidLeetcodeId = async (id) => {
-
-    //   try {
-    //     const response = await axios.get(`https://leetcode.com/${id}/`);
-
-    //     return response.status === 200;
-    //   } catch (error) {
-    //     return false;
-    //   }
-    // };
-
     const handleUpdateLeetcodeId = async () => {
         if (!updatedLeetcodeId.trim()) {
             showToast("warning", "The Leetcode ID cannot be empty.");
             return;
         }
-
-        // const isValid = await isValidLeetcodeId(updatedLeetcodeId);
-
-        // if (!isValid) {
-        //   showToast("error", "The Leetcode ID is invalid.");
-        //   return;
-        // }
 
         try {
             const response = await axios.put(
@@ -192,29 +171,11 @@ const CodingPlatformsSection = () => {
         }
     };
 
-    // const isValidGithubId = async (id) => {
-    //   try {
-    //     const response = await axios.get(`https://www.github.com/${id}`);
-
-    //     return response.status === 200;
-    //   } catch (error) {
-    //     return false;
-    //   }
-    // };
-
-
     const handleUpdateGithubId = async () => {
         if (!updatedGithubId.trim()) {
             showToast("warning", "The Github ID cannot be empty.");
             return;
         }
-
-        // const isValid = await isValidGithubId(updatedGithubId);
-
-        // if (!isValid) {
-        //   showToast("error", "The Github ID is invalid.");
-        //   return;
-        // }
 
         try {
             const response = await axios.put(
@@ -240,10 +201,10 @@ const CodingPlatformsSection = () => {
     };
 
     return (
-        <div className="w-full flex flex-col  px-3 py-4">
+        <div className="w-full flex flex-col px-3 py-4">
             <h1 className="font-bold text-3xl">Coding Platforms</h1>
-            <div className="flex mt-5 flex-col md:flex-row ">
-                <div className="w-full md:w-1/2  flex flex-col justify-center ">
+            <div className="flex mt-5 flex-col md:flex-row">
+                <div className="w-full md:w-1/2 flex flex-col justify-center">
                     {userData.codechefId ? (
                         <div
                             className="md:w-[95%] w-full"
@@ -275,11 +236,11 @@ const CodingPlatformsSection = () => {
                             <div className="w-full md:!w-[95%] relative flex items-center">
                                 <svg
                                     type="button"
-                                    onClick={() => {
-                                        handleUpdateCodechefId();
-                                        updateCodechefProfile();
+                                    onClick={async () => {
+                                        await handleUpdateCodechefId(); // Execute first
+                                        await updateCodechefProfile(); // Execute second
                                     }}
-                                    className="absolute ml-[90%] cursor-pointer "
+                                    className="absolute ml-[90%] cursor-pointer"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
                                     height="24"
@@ -291,7 +252,7 @@ const CodingPlatformsSection = () => {
                                     />
                                 </svg>
                                 <input
-                                    className="w-1/2  mt-1 shadow appearance-none border border-gray-700 hover:border-gray-400 bg-neutral-900 text-white rounded leading-tight focus:outline-none focus:shadow-outline"
+                                    className="w-1/2 mt-1 shadow appearance-none border border-gray-700 hover:border-gray-400 bg-neutral-900 text-white rounded leading-tight focus:outline-none focus:shadow-outline"
                                     name="text"
                                     autoComplete="off"
                                     type="text"
@@ -311,7 +272,7 @@ const CodingPlatformsSection = () => {
                     )}
                 </div>
 
-                <div className="md:w-1/2 w-full mt-2 md:mt-0  flex flex-col justify-center md:items-end">
+                <div className="md:w-1/2 w-full mt-2 md:mt-0 flex flex-col justify-center md:items-end">
                     {userData.codeforcesId ? (
                         <div
                             className="md:w-[95%] w-full"
@@ -343,10 +304,8 @@ const CodingPlatformsSection = () => {
                             <div className="w-full md:!w-[95%] relative flex items-center">
                                 <svg
                                     type="button"
-                                    onClick={() => {
-                                        handleUpdateCodeforcesId();
-                                    }}
-                                    className="absolute ml-[90%]  cursor-pointer "
+                                    onClick={handleUpdateCodeforcesId}
+                                    className="absolute ml-[90%] cursor-pointer"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
                                     height="24"
@@ -371,9 +330,7 @@ const CodingPlatformsSection = () => {
                                     type="text"
                                     value={updatedCodeforcesId}
                                     placeholder="CodeForces Id"
-                                    onChange={(e) =>
-                                        setUpdatedCodeforcesId(e.target.value)
-                                    }
+                                    onChange={(e) => setUpdatedCodeforcesId(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -409,14 +366,12 @@ const CodingPlatformsSection = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="w-full flex flex-col justify-center ">
-                            <div className="w-full md:!w-[95%] relative flex items-center ">
+                        <div className="w-full flex flex-col justify-center">
+                            <div className="w-full md:!w-[95%] relative flex items-center">
                                 <svg
                                     type="button"
-                                    onClick={() => {
-                                        handleUpdateLeetcodeId();
-                                    }}
-                                    className="absolute ml-[90%]  cursor-pointer "
+                                    onClick={handleUpdateLeetcodeId}
+                                    className="absolute ml-[90%] cursor-pointer"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
                                     height="24"
@@ -447,7 +402,7 @@ const CodingPlatformsSection = () => {
                         </div>
                     )}
                 </div>
-                <div className="md:w-1/2 w-full mt-2 md:mt-0  flex flex-col justify-center md:items-end">
+                <div className="md:w-1/2 w-full mt-2 md:mt-0 flex flex-col justify-center md:items-end">
                     {userData.githubId ? (
                         <div
                             className="md:w-[95%] w-full"
@@ -476,13 +431,11 @@ const CodingPlatformsSection = () => {
                         </div>
                     ) : (
                         <div className="w-full flex flex-col justify-center md:items-end">
-                            <div className="w-full md:!w-[95%] relative flex items-center ">
+                            <div className="w-full md:!w-[95%] relative flex items-center">
                                 <svg
                                     type="button"
-                                    onClick={() => {
-                                        handleUpdateGithubId();
-                                    }}
-                                    className="absolute ml-[90%] cursor-pointer "
+                                    onClick={handleUpdateGithubId}
+                                    className="absolute ml-[90%] cursor-pointer"
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
                                     height="24"

@@ -1,6 +1,17 @@
 import { useState } from "react";
-import { Button, useToast, Input, Flex, Box, FormControl, InputGroup, InputRightElement } from "@chakra-ui/react";
+import {
+  Button,
+  useToast,
+  Input,
+  Flex,
+  Box,
+  FormControl,
+  InputGroup,
+  InputRightElement,
+  Image,
+} from "@chakra-ui/react";
 import axios from "axios";
+import logo from "../assets/img/nexus-website-favicon-white.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,16 +19,19 @@ const Login = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(true); 
+
   const apiKey = import.meta.env.VITE_API_KEY;
   const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
-  const [token, setToken] = useState("");
   const [show, setShow] = useState(false);
   const toast = useToast();
 
-  const handleShow = () => setShow(!show)
+  const handleShow = () => setShow(!show);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -26,15 +40,14 @@ const Login = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`
+            Authorization: `Bearer ${apiKey}`,
           },
-        });
+        }
+      );
 
       const data = response.data;
-      console.log(data);
 
       if (data.accessToken) {
-        setToken(data.accessToken);
         localStorage.setItem("token", data.accessToken);
         e.target.reset();
         toast({
@@ -45,24 +58,59 @@ const Login = () => {
           isClosable: true,
         });
         window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 401 && data?.error === "Incorrect password") {
+          toast({
+            title: "Incorrect Password.",
+            description: "Please check your password and try again.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else if (status === 404 && data?.error === "User not found") {
+          toast({
+            title: "User Not Found.",
+            description: "Redirecting to Signup...",
+            status: "info",
+            duration: 3000,
+            isClosable: true,
+          });
+          setTimeout(() => {
+            window.location.href = "/signup";
+          }, 3000);
+        } else {
+          toast({
+            title: "Login Failed.",
+            description: data?.message || "An unexpected error occurred. Check console for details.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      } else if (error.request) {
+        toast({
+          title: "Network Error.",
+          description: "Unable to connect to the server. Please check your internet connection.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         toast({
-          title: "Login failed.",
-          description: "Please check your credentials.",
+          title: "Error.",
+          description: "Something went wrong. Please try again.",
           status: "error",
           duration: 3000,
           isClosable: true,
         });
       }
-    } catch (error) {
-      console.error("Login failed: " + error);
-      toast({
-        title: "An error occurred.",
-        description: "Please try again later.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,10 +120,14 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
+
+    if (name === "password") {
+      setIsPasswordValid(value.length === 0 || value.length >= 8); 
+    }
   };
 
   return (
-    <Flex className="flex justify-center items-center h-screen bg-zinc-900" >
+    <Flex className="flex justify-center items-center h-screen bg-zinc-900">
       <Box
         as="form"
         onSubmit={handleSubmit}
@@ -86,28 +138,33 @@ const Login = () => {
         rounded="md"
         method="POST"
       >
-        <h3 className="text-white text-center mb-5">Log In with College ID</h3>
+        <Image className="h-20 w-20 mx-auto" src={logo} alt="Logo" />
+        <h3 className="text-white text-center mb-5 font-bold">
+          Log In with College ID
+        </h3>
         <FormControl mb="5">
-          <Input required
+          <Input
+            required
             type="email"
             name="email"
             placeholder="Email"
             onChange={handleInputChange}
-            focusBorderColor='teal.800'
+            focusBorderColor="teal.800"
           />
         </FormControl>
         <FormControl mb="5">
-          <InputGroup size='md'>
-            <Input required
-              type={show ? 'text' : 'password'}
-              name='password'
-              placeholder='Enter password'
+          <InputGroup size="md">
+            <Input
+              required
+              type={show ? "text" : "password"}
+              name="password"
+              placeholder="Enter password"
               onChange={handleInputChange}
-              focusBorderColor='teal.800'
+              focusBorderColor="teal.800"
             />
-            <InputRightElement width='4.5rem'>
-              <Button h='1.75rem' size='sm' onClick={handleShow}>
-                {show ? 'Hide' : 'Show'}
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleShow}>
+                {show ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
           </InputGroup>
@@ -116,29 +173,20 @@ const Login = () => {
           <Button
             type="submit"
             bg="teal.800"
-            _hover={{ bg: "teal.700" }}
             color="white"
             fontWeight="bold"
-            py={2}
-            px={4}
-            rounded="md"
-            _focus={{ outline: "none", shadow: "outline" }}
+            isDisabled={loading || !isPasswordValid}
+            isLoading={loading}
           >
             Log In
           </Button>
-          <Button
-            bg="white"
-            color="teal.800"
-            fontWeight="bold"
-            py={2}
-            px={4}
-            rounded="md"
-            _focus={{ outline: "none", shadow: "outline" }}
-            onClick={() => {
-              window.location.href = "/signup";
-            }}
-          >
-            Sign Up
+          <Button bg="white" color="teal.800" fontWeight="bold" onClick={() => window.location.href = "/signup"}>
+            New User? Sign Up
+          </Button>
+        </Flex>
+        <Flex className="flex items-center justify-center space-x-2">
+          <Button bg="white" color="teal.800" fontWeight="bold" my={2} onClick={() => window.location.href = "/forgot-password"}>
+            Forgot Password? Reset
           </Button>
         </Flex>
       </Box>
