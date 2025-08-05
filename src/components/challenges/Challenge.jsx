@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
-import { AiFillDelete, AiFillEdit, AiOutlineArrowRight, AiOutlineCalendar } from "react-icons/ai";
+import axios from "axios";
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiOutlineArrowRight,
+  AiOutlineCalendar,
+} from "react-icons/ai";
 import { FaHackerrank } from "react-icons/fa";
 import { MdGroups2 } from "react-icons/md";
 import { SiCodechef } from "react-icons/si";
@@ -8,7 +13,8 @@ import { useToast } from "@chakra-ui/react";
 
 const Challenge = ({ challenge, role, onUpdate, userData }) => {
   const toast = useToast();
-  const backendUrl = import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URI || "http://localhost:5001";
   const apiKey = import.meta.env.VITE_API_KEY;
   const [isEditing, setIsEditing] = useState(false);
   const [challengeName, setChallengeName] = useState(challenge.name);
@@ -25,8 +31,8 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
           `${backendUrl}/api/contests/codechef/getuser/${userData._id}`,
           {
             headers: {
-              Authorization: `Bearer ${apiKey}`
-            }
+              Authorization: `Bearer ${apiKey}`,
+            },
           }
         );
 
@@ -40,7 +46,7 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
       }
     };
 
-    if (userData) {
+    if (userData && userData._id) {
       checkCodechefEnrollmentStatus();
     }
   }, [userData, challenge.name]);
@@ -55,7 +61,6 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
   };
 
   const handleUpdate = async () => {
-
     if (!description.trim()) {
       toast({
         title: "Cannot Update",
@@ -68,15 +73,19 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
     }
 
     try {
-      const response = await axios.put(`${backendUrl}/api/contests/${challenge._id}`, {
-        name: challengeName,
-        description: description
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+      const response = await axios.put(
+        `${backendUrl}/api/contests/${challenge._id}`,
+        {
+          name: challengeName,
+          description: description,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
         }
-      });
+      );
       if (response.status === 200) {
         const updatedChallenge = response.data;
         setDescription(updatedChallenge.description);
@@ -91,7 +100,6 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
         });
         setIsEditing(false);
       }
-
     } catch (error) {
       console.log(error);
       toast({
@@ -106,12 +114,15 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`${backendUrl}/api/contests/${challenge._id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+      const response = await axios.delete(
+        `${backendUrl}/api/contests/${challenge._id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
         }
-      });
+      );
 
       if (response.status === 200) {
         const deletedChallenge = response.data;
@@ -134,18 +145,17 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
         isClosable: true,
       });
     }
-  }
+  };
 
   const handleCodechefEnroll = async () => {
-
-    if (challenge.platform === 'CodeChef') {
+    if (challenge.platform === "CodeChef") {
       try {
         const response = await axios.put(
           `${backendUrl}/api/contests/codechef/enroll/${userData._id}`,
           {},
           {
             headers: {
-              Authorization: `Bearer ${apiKey}`
+              Authorization: `Bearer ${apiKey}`,
             },
           }
         );
@@ -170,10 +180,10 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
           isClosable: true,
         });
       }
-    } else if (challenge.platform === 'HackerRank') {
-      console.log('HackerRank');
+    } else if (challenge.platform === "HackerRank") {
+      console.log("HackerRank");
     }
-  }
+  };
 
   return (
     <div className="border border-zinc-700 rounded-xl p-5 bg-zinc-900/10 hover:bg-zinc-800/20 hover:cursor-pointer flex justify-between items-center space-x-5">
@@ -188,11 +198,10 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
         {isEditing ? (
           <div className="flex flex-col space-y-3">
             <textarea
-            value={challengeName}
+              value={challengeName}
               onChange={(e) => setChallengeName(e.target.value)}
               className="flex-grow h-10 min-h-[2rem] bg-zinc-700 text-white p-2 rounded"
             />
-
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -220,31 +229,36 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
             <div className="flex flex-col sm:flex-row justify-between items-center">
               <div className="flex items-center space-x-2 mt-2">
                 <MdGroups2 className="text-3xl text-gray-400" />
-                <span className="text-gray-400">{challenge.totalParticipant}</span>
+                <span className="text-gray-400">
+                  {challenge.totalParticipant}
+                </span>
                 <AiOutlineCalendar className="text-3xl text-gray-400" />
                 <span className="text-gray-400">{formattedDate}</span>
               </div>
-              {role !== 'admin' && (
+
+              {/* Enroll buttons are shown only if user is not admin AND is logged in */}
+              {role !== "admin" && userData && userData._id && (
                 <>
-                  {challenge.platform === 'CodeChef' && (
+                  {challenge.platform === "CodeChef" && (
                     <button
                       onClick={handleCodechefEnroll}
                       className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-3"
                       disabled={isCodechefEnrolled}
                     >
-                      {isCodechefEnrolled ? 'Enrolled' : 'Enroll'} <AiOutlineArrowRight className="ml-2" />
+                      {isCodechefEnrolled ? "Enrolled" : "Enroll"}{" "}
+                      <AiOutlineArrowRight className="ml-2" />
                     </button>
                   )}
-                  {challenge.platform === 'HackerRank' && (
-                    <button
-                      className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-3"
-                    >
-                      {isHackerRankEnrolled ? 'Enrolled' : 'Enroll'} <AiOutlineArrowRight className="ml-2" />
+                  {challenge.platform === "HackerRank" && (
+                    <button className="flex items-center bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded my-3">
+                      {isHackerRankEnrolled ? "Enrolled" : "Enroll"}{" "}
+                      <AiOutlineArrowRight className="ml-2" />
                     </button>
                   )}
                 </>
               )}
-              {role === 'admin' && (
+
+              {role === "admin" && (
                 <div className="flex space-x-3 my-3">
                   <button
                     onClick={handleEdit}
@@ -262,7 +276,6 @@ const Challenge = ({ challenge, role, onUpdate, userData }) => {
               )}
             </div>
           </>
-
         )}
       </div>
     </div>
